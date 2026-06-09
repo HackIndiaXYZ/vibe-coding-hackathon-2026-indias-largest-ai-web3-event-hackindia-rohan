@@ -1,7 +1,7 @@
 # Sahayak AI - Prompts Used
 
 ## Frontend
-- "Build a Next.js 15 app with TypeScript, Tailwind CSS v4, shadcn/ui for an AI document copilot"
+- "Build a Next.js app with TypeScript, Tailwind CSS, shadcn/ui for an AI document copilot"
 - "Create a landing page with hero section, feature cards, how-it-works steps, and CTA buttons"
 - "Build a file upload component with drag-and-drop using react-dropzone"
 

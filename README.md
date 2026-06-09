@@ -25,7 +25,7 @@ Sahayak AI explains forms in plain language, extracts structured requirements, c
 ## Architecture
 
 ```
-Frontend: Next.js 16 + React + TypeScript + Tailwind CSS v4 + shadcn/ui
+Frontend: Next.js + React + TypeScript + Tailwind CSS + shadcn/ui
 AI: Vercel AI SDK + NVIDIA NIM (Llama 3.3 70B)
 Parsing: pdfjs-dist + document type detection
 Logic: Deterministic eligibility, field mapping, scoring

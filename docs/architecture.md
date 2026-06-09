@@ -2,12 +2,12 @@
 
 ## System Overview
 
-Sahayak AI is a Next.js 16 application with a clean separation between AI-powered extraction, deterministic logic, and the user interface.
+Sahayak AI is a Next.js application with a clean separation between AI-powered extraction, deterministic logic, and the user interface.
 
 ```
 ┌─────────────────────────────────────────────────┐
 │                    Frontend                      │
-│  Next.js 16 App Router + Tailwind + shadcn/ui   │
+│  Next.js App Router + Tailwind + shadcn/ui       │
 ├─────────────────────────────────────────────────┤
 │                  API Routes                      │
 │  /api/parse  /api/chat  /api/demo               │

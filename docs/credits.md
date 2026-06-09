@@ -1,10 +1,10 @@
 # Sahayak AI - Credits
 
 ## Frameworks & Libraries
-- [Next.js 15](https://nextjs.org/) - React framework with App Router
-- [React 19](https://react.dev/) - UI library
+- [Next.js](https://nextjs.org/) - React framework with App Router
+- [React](https://react.dev/) - UI library
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
-- [Tailwind CSS v4](https://tailwindcss.com/) - Utility-first CSS
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS
 - [shadcn/ui](https://ui.shadcn.com/) - Component library
 - [Zod](https://zod.dev/) - Schema validation
 

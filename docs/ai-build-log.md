@@ -1,7 +1,7 @@
 # Sahayak AI - AI Build Log
 
 ## Day 1: Foundation
-- Used AI to scaffold Next.js 15 project with TypeScript and Tailwind CSS v4
+- Used AI to scaffold Next.js project with TypeScript and Tailwind CSS
 - AI generated all Zod schemas for 14+ data models
 - AI built the PDF parsing pipeline with pdfjs-dist integration
 - AI designed the NVIDIA NIM AI integration using Vercel AI SDK
