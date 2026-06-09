@@ -1,0 +1,45 @@
+import type { ApplicantProfile } from "@/types";
+
+export const DEMO_PROFILE: ApplicantProfile = {
+  id: "demo-profile-priya",
+  personal: {
+    firstName: "Priya",
+    lastName: "Sharma",
+    dateOfBirth: "2004-08-15",
+    gender: "Female",
+    nationality: "Indian",
+    category: "SC",
+    email: "priya.sharma@example.com",
+    phone: "+91 98765 43210",
+    address: "H.No. 42, Near Old Bus Stand, Main Road",
+    city: "Jaipur",
+    state: "Rajasthan",
+    pincode: "302001",
+  },
+  education: {
+    level: "12th Pass",
+    institution: "Govt. Senior Secondary School, Jaipur",
+    course: "Science (PCM)",
+    year: "2025",
+    percentage: "82",
+    rollNumber: "RJ-12-45678",
+  },
+  financial: {
+    familyIncome: "180000",
+    bankName: "State Bank of India",
+    accountNumber: "12345678901",
+    ifscCode: "SBIN0001234",
+  },
+  documents: {
+    aadhaar: true,
+    panCard: false,
+    incomeCertificate: true,
+    casteCertificate: true,
+    marksheet: true,
+    admissionLetter: true,
+    bankPassbook: true,
+    photograph: true,
+    signature: true,
+  },
+  notes: "First-generation college student. Father works as a farmer. Mother is a homemaker. Seeking scholarship to pursue B.Sc. Computer Science at University of Rajasthan.",
+};
