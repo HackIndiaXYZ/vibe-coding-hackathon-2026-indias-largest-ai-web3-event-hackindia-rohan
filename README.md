@@ -45,7 +45,7 @@ npm install
 
 # Environment
 cp .env.example .env.local
-# Add: GOOGLE_GENERATIVE_AI_API_KEY=your-key
+# Add: NVIDIA_API_KEY=nvapi-your-key-here
 
 # Run
 npm run dev
@@ -65,11 +65,15 @@ No API key needed. Click "Try Demo" → "Load Demo & Start" to explore with pre-
 
 ## Limitations
 
-- Demo mode uses pre-parsed documents for speed
 - OCR on low-quality scans may produce inaccurate text
 - Chat responses depend on NVIDIA NIM API availability
-- Multi-language support
+- Browser-only persistence (localforage) — no cross-device sync
+
+## Roadmap
+
+- Multi-language OCR (Hindi, regional scripts)
 - Batch document processing
+- Server-side profile sync across devices
 - Agent-assisted form filing
 - Mobile app
 
