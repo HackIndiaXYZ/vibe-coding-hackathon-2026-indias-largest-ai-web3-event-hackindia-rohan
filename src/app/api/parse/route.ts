@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { model } from "@/lib/ai/nim";
-import { extractTextFromPDF } from "@/lib/parsing/pdf-parser";
+import { extractTextFromPDF, extractTextFromImage } from "@/lib/parsing/pdf-parser";
 import { buildDocumentParsingPrompt } from "@/lib/ai/prompt-builder";
 import { detectDocumentType, getFileExtension } from "@/lib/parsing/document-detector";
 import type { ParsedDocument } from "@/types";
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
         const extraction = await extractTextFromPDF(file);
         rawText = extraction.text;
       } else if (fileType === "image") {
-        rawText = `[Image: ${file.name} - OCR processing would extract text here]`;
+        rawText = await extractTextFromImage(file);
       } else {
         const text = await file.text();
         rawText = text;

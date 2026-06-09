@@ -60,13 +60,8 @@ No API key needed. Click "Try Demo" → "Load Demo & Start" to explore with pre-
 ## Limitations
 
 - Demo mode uses pre-parsed documents for speed
-- OCR for scanned images is simulated (production would use Tesseract.js or cloud OCR)
+- OCR on low-quality scans may produce inaccurate text
 - Chat responses depend on NVIDIA NIM API availability
-
-## Future Work
-
-- Real OCR pipeline with Tesseract.js
-- Supabase integration for persistent profiles
 - Multi-language support
 - Batch document processing
 - Agent-assisted form filing
