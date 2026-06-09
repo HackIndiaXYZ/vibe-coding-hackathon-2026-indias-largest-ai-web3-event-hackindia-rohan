@@ -11,47 +11,11 @@ import {
   Sun,
   Moon,
   CheckCircle2,
-  ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useTheme } from "next-themes";
-
-const capabilities = [
-  {
-    icon: FileText,
-    title: "Understand Any Form",
-    description:
-      "Upload any scholarship, admission, reimbursement, or government form. Sahayak extracts every field, requirement, deadline, and clause in plain language.",
-    color: "text-primary",
-    bg: "bg-primary/5",
-  },
-  {
-    icon: ClipboardList,
-    title: "Auto-build Your Checklist",
-    description:
-      "Instantly know which documents you have, which are missing, and what to gather first. Prioritized by urgency with clear reasons.",
-    color: "text-success",
-    bg: "bg-success/10",
-  },
-  {
-    icon: MessageSquareText,
-    title: "Ask & Auto-fill",
-    description:
-      "Ask grounded questions about any clause or requirement. Draft answers from your profile with confidence labels. Never guess again.",
-    color: "text-info",
-    bg: "bg-info/10",
-  },
-  {
-    icon: Sparkles,
-    title: "Simplify Any Clause",
-    description:
-      "Paste any legal or formal clause and get an instant plain-language rewrite with key points and action items. No more guessing what the fine print means.",
-    color: "text-warning",
-    bg: "bg-warning/10",
-  },
-];
 
 const steps = [
   {
@@ -111,11 +75,11 @@ export default function LandingPage() {
       </header>
 
       <main>
-        {/* Hero Section */}
+        {/* Hero Section — left-aligned */}
         <section className="border-b">
           <div className="mx-auto max-w-6xl px-4 py-20 md:py-28">
-            <div className="text-center space-y-6 max-w-3xl mx-auto">
-              <Badge variant="secondary" className="text-xs font-medium">
+            <div className="max-w-2xl space-y-6">
+              <Badge variant="secondary" className="text-xs font-medium w-fit">
                 <Sparkles className="h-3 w-3 mr-1" />
                 AI Copilot for Forms & Paperwork
               </Badge>
@@ -123,12 +87,12 @@ export default function LandingPage() {
                 Turn confusing forms into{" "}
                 <span className="text-primary">clear action plans</span>
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
                 Sahayak AI transforms scholarship forms, admission applications,
                 reimbursement claims, and government documents into a plain-language
                 checklist, guided flow, and ready-to-submit package.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row items-start gap-3 pt-2">
                 <Button size="lg" onClick={() => router.push("/demo")}>
                   Try Demo <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -137,67 +101,131 @@ export default function LandingPage() {
                 </Button>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* Preview cards */}
-            <div className="mt-16 grid md:grid-cols-3 gap-4">
-              {capabilities.map((cap, i) => (
-                <Card key={i} className="border-0 shadow-sm bg-muted/30">
-                  <CardContent className="p-6 space-y-3">
-                    <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${cap.bg}`}>
-                      <cap.icon className={`h-5 w-5 ${cap.color}`} />
-                    </div>
-                    <h3 className="font-semibold">{cap.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {cap.description}
+        {/* Capabilities — asymmetric 2-col top, full-width callout, 2-col bottom */}
+        <section className="border-b py-16 md:py-20">
+          <div className="mx-auto max-w-6xl px-4 space-y-6">
+            {/* Top row: 2 cards side by side */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card className="border-0 shadow-sm bg-muted/30">
+                <CardContent className="p-6 space-y-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/5">
+                    <FileText className="h-5 w-5 text-primary" />
+                  </div>
+                  <h3 className="font-semibold text-lg">Understand Any Form</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Upload any scholarship, admission, reimbursement, or government form.
+                    Sahayak extracts every field, requirement, deadline, and clause in plain language.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card className="border-0 shadow-sm bg-muted/30">
+                <CardContent className="p-6 space-y-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-success/10">
+                    <ClipboardList className="h-5 w-5 text-success" />
+                  </div>
+                  <h3 className="font-semibold text-lg">Auto-build Your Checklist</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Instantly know which documents you have, which are missing, and what to gather
+                    first. Prioritized by urgency with clear reasons.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Full-width callout — Simplify Any Clause */}
+            <Card className="border-0 shadow-sm bg-primary/5">
+              <CardContent className="p-8 md:p-10">
+                <div className="flex flex-col md:flex-row md:items-center gap-6">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                    <Sparkles className="h-7 w-7 text-primary" />
+                  </div>
+                  <div className="flex-1 space-y-2">
+                    <h3 className="font-semibold text-xl">Simplify Any Clause</h3>
+                    <p className="text-muted-foreground leading-relaxed max-w-2xl">
+                      Paste any legal or formal clause and get an instant plain-language rewrite
+                      with key points and action items. No more guessing what the fine print means.
                     </p>
-                  </CardContent>
-                </Card>
-              ))}
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="shrink-0"
+                    onClick={() => router.push("/simplify")}
+                  >
+                    Try It <ArrowRight className="ml-1 h-3 w-3" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Bottom row: 2 cards side by side */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card className="border-0 shadow-sm bg-muted/30">
+                <CardContent className="p-6 space-y-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-info/10">
+                    <MessageSquareText className="h-5 w-5 text-info" />
+                  </div>
+                  <h3 className="font-semibold text-lg">Ask & Auto-fill</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Ask grounded questions about any clause or requirement. Draft answers from
+                    your profile with confidence labels. Never guess again.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card className="border-0 shadow-sm bg-muted/30">
+                <CardContent className="p-6 space-y-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-warning/10">
+                    <Shield className="h-5 w-5 text-warning" />
+                  </div>
+                  <h3 className="font-semibold text-lg">Grounded, Not Guessed</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Every answer cites the specific document section it comes from.
+                    No hallucinations. No fabrications. You stay in control.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
 
-        {/* How It Works */}
+        {/* How It Works — left-aligned, horizontal steps */}
         <section className="border-b py-16 md:py-20">
           <div className="mx-auto max-w-6xl px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-2xl md:text-3xl font-bold mb-3">How It Works</h2>
-              <p className="text-muted-foreground max-w-lg mx-auto">
-                Four simple steps from a confusing PDF to a clear submission plan.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-4 gap-6">
+            <h2 className="text-2xl md:text-3xl font-bold mb-12">How It Works</h2>
+            <div className="grid md:grid-cols-4 gap-8">
               {steps.map((step, i) => (
-                <div key={i} className="text-center space-y-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-sm mx-auto">
+                <div key={i} className="relative space-y-3">
+                  <div className="text-xs font-mono text-muted-foreground tracking-wider">
                     {step.step}
                   </div>
                   <h3 className="font-semibold">{step.title}</h3>
-                  <p className="text-sm text-muted-foreground">{step.description}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {step.description}
+                  </p>
+                  {i < 3 && (
+                    <div className="hidden md:block absolute top-3 -right-4 w-4 h-px bg-border" />
+                  )}
                 </div>
               ))}
             </div>
-            <div className="text-center mt-10">
+            <div className="mt-10">
               <Button variant="outline" onClick={() => router.push("/demo")}>
-                Get Started <ChevronRight className="ml-1 h-4 w-4" />
+                Get Started <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </div>
           </div>
         </section>
 
-        {/* Use Cases */}
+        {/* Use Cases — 2+1 asymmetric */}
         <section className="border-b py-16 md:py-20">
           <div className="mx-auto max-w-6xl px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-2xl md:text-3xl font-bold mb-3">
-                Built for real paperwork
-              </h2>
-              <p className="text-muted-foreground max-w-lg mx-auto">
-                From scholarships to medical claims, Sahayak handles the documents
-                that matter most.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-4">
+            <h2 className="text-2xl md:text-3xl font-bold mb-12">
+              Built for real paperwork
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
               {[
                 {
                   title: "Scholarship Forms",
@@ -219,7 +247,7 @@ export default function LandingPage() {
                   <CardContent className="p-6 space-y-3">
                     <h3 className="font-semibold">{useCase.title}</h3>
                     <p className="text-sm text-muted-foreground">{useCase.desc}</p>
-                    <ul className="space-y-1.5">
+                    <ul className="space-y-1.5 pt-1">
                       {useCase.items.map((item, j) => (
                         <li
                           key={j}
@@ -237,14 +265,12 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Trust Section */}
+        {/* Trust — left-aligned */}
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-6xl px-4">
-            <div className="text-center space-y-4 max-w-2xl mx-auto">
-              <div className="flex justify-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                  <Shield className="h-6 w-6 text-primary" />
-                </div>
+            <div className="max-w-2xl space-y-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+                <Shield className="h-6 w-6 text-primary" />
               </div>
               <h2 className="text-2xl md:text-3xl font-bold">
                 Grounded in your documents, not AI guesses
@@ -255,11 +281,11 @@ export default function LandingPage() {
                 uncertainty, and never fabricates official requirements. You stay in
                 control.
               </p>
-            </div>
-            <div className="text-center mt-8">
-              <Button size="lg" onClick={() => router.push("/demo")}>
-                Try Sahayak AI <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+              <div className="pt-2">
+                <Button size="lg" onClick={() => router.push("/demo")}>
+                  Try Sahayak AI <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </div>
         </section>
@@ -267,10 +293,8 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t py-8">
-        <div className="mx-auto max-w-6xl px-4 text-center text-sm text-muted-foreground">
-          <p>
-            Built for HackIndia 2026. Powered by Next.js and NVIDIA NIM.
-          </p>
+        <div className="mx-auto max-w-6xl px-4 text-sm text-muted-foreground">
+          Built for HackIndia 2026. Powered by Next.js and NVIDIA NIM.
         </div>
       </footer>
     </div>
