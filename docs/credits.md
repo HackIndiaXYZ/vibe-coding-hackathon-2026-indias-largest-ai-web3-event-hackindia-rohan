@@ -10,7 +10,7 @@
 
 ## AI & ML
 - [Vercel AI SDK](https://sdk.vercel.ai/) - AI integration framework
-- [Google Gemini 2.0 Flash](https://ai.google.dev/) - LLM for document understanding
+- [NVIDIA NIM](https://build.nvidia.com/) - LLM inference (Llama 3.3 70B) for document understanding
 
 ## Document Processing
 - [pdfjs-dist](https://mozilla.github.io/pdf.js/) - PDF text extraction

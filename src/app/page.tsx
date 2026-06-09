@@ -43,6 +43,14 @@ const capabilities = [
     color: "text-info",
     bg: "bg-info/10",
   },
+  {
+    icon: Sparkles,
+    title: "Simplify Any Clause",
+    description:
+      "Paste any legal or formal clause and get an instant plain-language rewrite with key points and action items. No more guessing what the fine print means.",
+    color: "text-warning",
+    bg: "bg-warning/10",
+  },
 ];
 
 const steps = [
@@ -261,7 +269,7 @@ export default function LandingPage() {
       <footer className="border-t py-8">
         <div className="mx-auto max-w-6xl px-4 text-center text-sm text-muted-foreground">
           <p>
-            Built for HackIndia 2026. Powered by Next.js, Gemini, and Supabase.
+            Built for HackIndia 2026. Powered by Next.js, NVIDIA NIM, and Supabase.
           </p>
         </div>
       </footer>

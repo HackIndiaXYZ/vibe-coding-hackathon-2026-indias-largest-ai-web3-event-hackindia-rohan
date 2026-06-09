@@ -3,7 +3,7 @@
 ## Prerequisites
 - Node.js 18+ (recommended: 20+)
 - npm, pnpm, or yarn
-- Google AI API key (for Gemini)
+- NVIDIA NIM API key
 
 ## Installation
 
@@ -24,10 +24,12 @@ cp .env.example .env.local
 Create `.env.local` with:
 
 ```
-GOOGLE_GENERATIVE_AI_API_KEY=your-google-ai-api-key
+NVIDIA_API_KEY=your-nvidia-nim-api-key
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 ```
 
-Get your API key from [Google AI Studio](https://aistudio.google.com/apikey).
+Get your NVIDIA NIM API key from [build.nvidia.com](https://build.nvidia.com/).
 
 ## Running Locally
 
@@ -51,7 +53,7 @@ Click "Try Demo" on the landing page, then "Load Demo & Start".
 ### Vercel (Recommended)
 1. Push to GitHub
 2. Import project in Vercel
-3. Add `GOOGLE_GENERATIVE_AI_API_KEY` in environment variables
+3. Add `NVIDIA_API_KEY`, `NEXT_PUBLIC_SUPABASE_URL`, and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in environment variables
 4. Deploy
 
 ```bash
@@ -64,7 +66,7 @@ npx vercel
 ```
 src/
   app/           # Next.js App Router pages
-    api/         # API routes (parse, chat, demo)
+    api/         # API routes (parse, chat, demo, simplify)
     documents/   # Document overview page
     profile/     # Applicant profile page
     eligibility/ # Eligibility results page
