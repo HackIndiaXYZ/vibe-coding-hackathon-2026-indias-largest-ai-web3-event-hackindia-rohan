@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { useTheme } from "next-themes";
 import { useClauseSimplifier } from "@/hooks/useClauseSimplifier";
+import { useDemoStore } from "@/lib/demo-store";
 
 const SAMPLE_CLAUSES = [
   "The candidate must be a domicile of the state for a minimum period of 5 years preceding the date of application and must produce a domicile certificate issued by the competent authority.",
@@ -30,6 +31,7 @@ const SAMPLE_CLAUSES = [
 export default function SimplifyPage() {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
+  const { language, setLanguage } = useDemoStore();
   const { result, isSimplifying, error, simplify, reset } = useClauseSimplifier();
   const [input, setInput] = useState("");
   const [title, setTitle] = useState("");
@@ -37,7 +39,7 @@ export default function SimplifyPage() {
 
   const handleSimplify = () => {
     if (!input.trim()) return;
-    simplify(input.trim(), title.trim() || "Document");
+    simplify(input.trim(), title.trim() || "Document", language);
   };
 
   const handleCopy = async () => {
@@ -56,6 +58,13 @@ export default function SimplifyPage() {
             <span className="text-lg font-semibold">Sahayak AI</span>
           </div>
           <div className="flex items-center gap-3">
+            <Button
+              variant={language === "hi" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setLanguage(language === "en" ? "hi" : "en")}
+            >
+              {language === "en" ? "HI" : "EN"}
+            </Button>
             <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
               <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
               <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />

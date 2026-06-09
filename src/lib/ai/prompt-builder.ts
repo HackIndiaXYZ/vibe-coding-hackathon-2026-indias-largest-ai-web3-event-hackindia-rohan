@@ -110,8 +110,16 @@ Rules:
 - Never fabricate data. If unsure, mark as "needs-review".`;
 }
 
-export function buildClauseSimplificationPrompt(clause: string, documentTitle: string): string {
-  return `Simplify the following legal/formal clause from "${documentTitle}" into plain, simple language.
+export function buildClauseSimplificationPrompt(
+  clause: string,
+  documentTitle: string,
+  lang: "en" | "hi" = "en"
+): string {
+  const langRule = lang === "hi"
+    ? "\n- Respond entirely in Hindi (Devanagari script)"
+    : "\n- Respond in English";
+
+  return `Simplify the following legal/formal clause from "${documentTitle}" into plain, simple language.${langRule}
 
 Original clause:
 """
@@ -137,12 +145,17 @@ export function buildChatPrompt(
   document: ParsedDocument,
   profile: ApplicantProfile,
   eligibility: EligibilityResult | null,
-  history: ChatMessage[]
+  history: ChatMessage[],
+  lang: "en" | "hi" = "en"
 ): string {
   const historyStr = history
     .slice(-6)
     .map((m) => `${m.role}: ${m.content}`)
     .join("\n");
+
+  const langRule = lang === "hi"
+    ? "\n7. Respond entirely in Hindi (Devanagari script)"
+    : "\n7. Respond in English";
 
   return `You are Sahayak AI. Answer the user's question using ONLY the provided document data and profile.
 
@@ -174,7 +187,7 @@ Rules:
 3. If the document doesn't address the question, say so
 4. Use simple, clear language
 5. Be concise but helpful
-6. If you're uncertain, say "This requires manual verification with the issuing authority"
+6. If you're uncertain, say "This requires manual verification with the issuing authority"${langRule}
 
 Respond in JSON:
 {

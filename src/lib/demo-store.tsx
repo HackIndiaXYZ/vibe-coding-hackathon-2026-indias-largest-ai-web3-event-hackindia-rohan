@@ -1,6 +1,7 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import React, { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
+import localforage from "localforage";
 import type {
   ParsedDocument,
   ApplicantProfile,
@@ -29,6 +30,7 @@ interface DemoStore {
   chatMessages: ChatMessage[];
   isLoading: boolean;
   currentStep: number;
+  language: "en" | "hi";
 
   // Actions
   setDocuments: (docs: ParsedDocument[]) => void;
@@ -41,6 +43,7 @@ interface DemoStore {
   addChatMessage: (msg: ChatMessage) => void;
   setLoading: (loading: boolean) => void;
   setCurrentStep: (step: number) => void;
+  setLanguage: (lang: "en" | "hi") => void;
   loadDemo: () => Promise<void>;
 }
 
@@ -58,6 +61,33 @@ export function DemoStoreProvider({ children }: { children: ReactNode }) {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+  const [language, setLanguage] = useState<"en" | "hi">("en");
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const docs = await localforage.getItem<ParsedDocument[]>("sahayak-docs");
+        const prof = await localforage.getItem<ApplicantProfile>("sahayak-profile");
+        const msgs = await localforage.getItem<ChatMessage[]>("sahayak-chat");
+        const lang = await localforage.getItem<"en" | "hi">("sahayak-lang");
+        if (docs?.length) { setDocumentsState(docs); setActiveDocument(docs[0]); }
+        if (prof) setProfile(prof);
+        if (msgs?.length) setChatMessages(msgs);
+        if (lang) setLanguage(lang);
+      } catch { /* ignore */ }
+      setHydrated(true);
+    };
+    load();
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    localforage.setItem("sahayak-docs", documents);
+    localforage.setItem("sahayak-profile", profile);
+    localforage.setItem("sahayak-chat", chatMessages);
+    localforage.setItem("sahayak-lang", language);
+  }, [documents, profile, chatMessages, language, hydrated]);
 
   const setDocuments = useCallback((docs: ParsedDocument[]) => {
     setDocumentsState(docs);
@@ -184,6 +214,7 @@ export function DemoStoreProvider({ children }: { children: ReactNode }) {
         chatMessages,
         isLoading,
         currentStep,
+        language,
         setDocuments,
         setActiveDocument,
         setProfile,
@@ -194,6 +225,7 @@ export function DemoStoreProvider({ children }: { children: ReactNode }) {
         addChatMessage,
         setLoading: setIsLoading,
         setCurrentStep,
+        setLanguage,
         loadDemo,
       }}
     >

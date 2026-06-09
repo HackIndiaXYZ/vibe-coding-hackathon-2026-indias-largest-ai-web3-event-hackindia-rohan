@@ -19,12 +19,13 @@ const chatResponseSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { question, document, profile, eligibility, history } = body as {
+    const { question, document, profile, eligibility, history, lang } = body as {
       question: string;
       document: ParsedDocument;
       profile: ApplicantProfile;
       eligibility: EligibilityResult | null;
       history: ChatMessage[];
+      lang?: "en" | "hi";
     };
 
     if (!question || !document || !profile) {
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const prompt = buildChatPrompt(question, document, profile, eligibility, history || []);
+    const prompt = buildChatPrompt(question, document, profile, eligibility, history || [], lang || "en");
 
     const { object } = await generateObject({
       model: model,

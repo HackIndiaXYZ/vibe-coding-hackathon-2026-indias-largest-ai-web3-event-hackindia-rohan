@@ -13,9 +13,10 @@ const simplifySchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { clause, documentTitle } = body as {
+    const { clause, documentTitle, lang } = body as {
       clause: string;
       documentTitle: string;
+      lang?: "en" | "hi";
     };
 
     if (!clause) {
@@ -25,7 +26,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const prompt = buildClauseSimplificationPrompt(clause, documentTitle || "Unknown Document");
+    const prompt = buildClauseSimplificationPrompt(clause, documentTitle || "Unknown Document", lang || "en");
 
     const { object } = await generateObject({
       model: model,

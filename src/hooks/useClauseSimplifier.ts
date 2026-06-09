@@ -13,14 +13,14 @@ export function useClauseSimplifier() {
   const [isSimplifying, setIsSimplifying] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const simplify = useCallback(async (clause: string, documentTitle: string) => {
+  const simplify = useCallback(async (clause: string, documentTitle: string, lang: "en" | "hi" = "en") => {
     setIsSimplifying(true);
     setError(null);
     try {
       const res = await fetch("/api/simplify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ clause, documentTitle }),
+        body: JSON.stringify({ clause, documentTitle, lang }),
       });
       const data = await res.json();
       if (!res.ok) {

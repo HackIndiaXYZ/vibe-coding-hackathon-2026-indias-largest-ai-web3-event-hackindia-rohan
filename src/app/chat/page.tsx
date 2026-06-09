@@ -40,6 +40,8 @@ export default function ChatPage() {
     chatMessages,
     addChatMessage,
     runScoring,
+    language,
+    setLanguage,
   } = useDemoStore();
 
   const [input, setInput] = useState("");
@@ -81,6 +83,7 @@ export default function ChatPage() {
           profile,
           eligibility,
           history: chatMessages,
+          lang: language,
         }),
       });
       const data = await res.json();
@@ -127,6 +130,13 @@ export default function ChatPage() {
             <span className="text-lg font-semibold">Sahayak AI</span>
           </div>
           <div className="flex items-center gap-3">
+            <Button
+              variant={language === "hi" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setLanguage(language === "en" ? "hi" : "en")}
+            >
+              {language === "en" ? "HI" : "EN"}
+            </Button>
             <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
               <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
               <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
