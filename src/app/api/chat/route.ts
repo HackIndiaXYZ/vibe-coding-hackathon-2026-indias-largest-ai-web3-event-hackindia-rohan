@@ -1,20 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import { generateObject } from "ai";
-import { z } from "zod";
+import { NextRequest } from "next/server";
+import { streamText } from "ai";
 import { model } from "@/lib/ai/nim";
 import { buildChatPrompt } from "@/lib/ai/prompt-builder";
 import type { ParsedDocument, ApplicantProfile, EligibilityResult, ChatMessage } from "@/types";
-
-const chatResponseSchema = z.object({
-  answer: z.string(),
-  citations: z.array(
-    z.object({
-      text: z.string(),
-      source: z.string(),
-      section: z.string().optional(),
-    })
-  ),
-});
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,36 +17,23 @@ export async function POST(request: NextRequest) {
     };
 
     if (!question || !document || !profile) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
+      return Response.json({ error: "Missing required fields" }, { status: 400 });
     }
 
     if (question.length > 2000) {
-      return NextResponse.json({ error: "Question too long (max 2000 characters)" }, { status: 400 });
+      return Response.json({ error: "Question too long (max 2000 characters)" }, { status: 400 });
     }
 
     const prompt = buildChatPrompt(question, document, profile, eligibility, history || [], lang || "en");
 
-    const { object } = await generateObject({
-      model: model,
-      schema: chatResponseSchema,
+    const result = streamText({
+      model,
       prompt,
     });
 
-    return NextResponse.json({
-      id: `msg-${Date.now()}`,
-      role: "assistant" as const,
-      content: object.answer,
-      citations: object.citations,
-      timestamp: new Date().toISOString(),
-    });
+    return result.toTextStreamResponse();
   } catch (error) {
     console.error("Chat error:", error);
-    return NextResponse.json(
-      { error: "Failed to process question" },
-      { status: 500 }
-    );
+    return Response.json({ error: "Failed to process question" }, { status: 500 });
   }
 }

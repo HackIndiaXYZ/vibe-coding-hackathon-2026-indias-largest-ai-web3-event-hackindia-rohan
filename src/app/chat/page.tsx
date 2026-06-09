@@ -10,9 +10,7 @@ import {
   Moon,
   Bot,
   User,
-  FileText,
   Loader2,
-  Quote,
   Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -46,12 +44,13 @@ export default function ChatPage() {
 
   const [input, setInput] = useState("");
   const [isSending, setIsSending] = useState(false);
+  const [streamingText, setStreamingText] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const idRef = useRef(0);
+  const msgIdRef = useRef(0);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatMessages]);
+  }, [chatMessages, streamingText]);
 
   useEffect(() => {
     if (!activeDocument || !profile) {
@@ -62,9 +61,8 @@ export default function ChatPage() {
   const sendMessage = async (text: string) => {
     if (!text.trim() || isSending || !activeDocument || !profile) return;
 
-    idRef.current += 1;
     const userMsg: ChatMessage = {
-      id: `msg-${idRef.current}`,
+      id: `msg-${++msgIdRef.current}`,
       role: "user",
       content: text.trim(),
       timestamp: new Date().toISOString(),
@@ -72,6 +70,7 @@ export default function ChatPage() {
     addChatMessage(userMsg);
     setInput("");
     setIsSending(true);
+    setStreamingText("");
 
     try {
       const res = await fetch("/api/chat", {
@@ -86,30 +85,45 @@ export default function ChatPage() {
           lang: language,
         }),
       });
-      const data = await res.json();
-      if (res.ok) {
-        addChatMessage(data);
-      } else {
-        idRef.current += 1;
+
+      if (!res.ok) {
+        throw new Error("Failed to get response");
+      }
+
+      const reader = res.body?.getReader();
+      const decoder = new TextDecoder();
+      let fullText = "";
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value, { stream: true });
+          fullText += chunk;
+          setStreamingText(fullText);
+        }
+      }
+
+      if (fullText) {
         addChatMessage({
-          id: `msg-${idRef.current}-err`,
+          id: `msg-${++msgIdRef.current}-resp`,
           role: "assistant",
-          content: "Sorry, I couldn't process that question. Please try again.",
+          content: fullText,
           citations: [],
           timestamp: new Date().toISOString(),
         });
       }
     } catch {
-      idRef.current += 1;
       addChatMessage({
-        id: `msg-${idRef.current}-err`,
+        id: `msg-${++msgIdRef.current}-err`,
         role: "assistant",
-        content: "Network error. Please check your connection and try again.",
+        content: "Sorry, I couldn't process that question. Please try again.",
         citations: [],
         timestamp: new Date().toISOString(),
       });
     } finally {
       setIsSending(false);
+      setStreamingText("");
     }
   };
 
@@ -172,7 +186,7 @@ export default function ChatPage() {
       <div className="flex-1 overflow-y-auto">
         <div className="mx-auto max-w-3xl px-4 py-6 space-y-4">
           {/* Welcome message */}
-          {chatMessages.length === 0 && (
+          {chatMessages.length === 0 && !streamingText && (
             <div className="text-center space-y-4 py-8">
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
                 <Sparkles className="h-6 w-6 text-primary" />
@@ -215,25 +229,6 @@ export default function ChatPage() {
                 >
                   {msg.content}
                 </div>
-
-                {/* Citations */}
-                {msg.citations && msg.citations.length > 0 && (
-                  <div className="space-y-1">
-                    {msg.citations.map((citation, ci) => (
-                      <div key={ci} className="flex items-start gap-2 rounded-lg bg-muted/50 border p-2.5 text-xs">
-                        <Quote className="h-3 w-3 text-muted-foreground shrink-0 mt-0.5" />
-                        <div className="space-y-0.5">
-                          <p className="text-muted-foreground italic">{citation.text}</p>
-                          <div className="flex items-center gap-1.5 text-muted-foreground">
-                            <FileText className="h-3 w-3" />
-                            <span>{citation.source}</span>
-                            {citation.section && <span>&middot; {citation.section}</span>}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
               {msg.role === "user" && (
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted">
@@ -243,7 +238,22 @@ export default function ChatPage() {
             </div>
           ))}
 
-          {isSending && (
+          {/* Streaming response */}
+          {streamingText && (
+            <div className="flex gap-3">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                <Bot className="h-4 w-4 text-primary" />
+              </div>
+              <div className="max-w-[80%]">
+                <div className="rounded-2xl rounded-bl-sm bg-muted px-4 py-3 text-sm leading-relaxed">
+                  {streamingText}
+                  <span className="inline-block w-1.5 h-4 bg-primary/60 animate-pulse ml-0.5 align-text-bottom" />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {isSending && !streamingText && (
             <div className="flex gap-3">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
                 <Bot className="h-4 w-4 text-primary" />
