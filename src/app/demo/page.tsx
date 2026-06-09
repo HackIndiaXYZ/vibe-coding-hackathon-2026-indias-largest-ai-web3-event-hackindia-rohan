@@ -7,12 +7,12 @@ import {
   FileText,
   ArrowRight,
   Loader2,
-  CheckCircle2,
   AlertCircle,
   Sun,
   Moon,
   Zap,
   X,
+  Sparkles,
 } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
@@ -35,6 +35,8 @@ export default function DemoPage() {
   const [uploadProgress, setUploadProgress] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [parsingDemo, setParsingDemo] = useState(false);
+  const [demoProgress, setDemoProgress] = useState<string | null>(null);
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
@@ -96,6 +98,44 @@ export default function DemoPage() {
       setError("Failed to load demo data");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleParseDemoPDFs = async () => {
+    setParsingDemo(true);
+    setDemoProgress("Fetching sample PDFs...");
+    setError(null);
+
+    try {
+      const files = await Promise.all(
+        [
+          { url: "/demo/scholarship.pdf", name: "scholarship.pdf" },
+          { url: "/demo/reimbursement.pdf", name: "reimbursement.pdf" },
+          { url: "/demo/admission.pdf", name: "admission.pdf" },
+        ].map(async (f) => {
+          const res = await fetch(f.url);
+          const blob = await res.blob();
+          return new File([blob], f.name, { type: "application/pdf" });
+        })
+      );
+
+      setDemoProgress("Uploading to AI parser...");
+      const formData = new FormData();
+      files.forEach((f) => formData.append("files", f));
+
+      setDemoProgress("AI is parsing 3 documents (this takes ~30s)...");
+      const res = await fetch("/api/parse", { method: "POST", body: formData });
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || "Parse failed");
+
+      setDemoProgress("Documents parsed! Loading results...");
+      setDocuments(data.documents);
+      setTimeout(() => router.push("/documents"), 800);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to parse demo PDFs");
+    } finally {
+      setParsingDemo(false);
     }
   };
 
@@ -223,56 +263,19 @@ export default function DemoPage() {
           {/* Demo mode section */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Try Demo Mode</CardTitle>
+              <CardTitle className="text-lg">Demo Mode</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-sm text-muted-foreground">
-                Explore Sahayak with pre-loaded sample documents and a seeded applicant profile.
-                No setup required.
-              </p>
-
               <div className="space-y-2">
+                <p className="text-sm font-medium">Sample Documents</p>
                 {[
-                  {
-                    title: "Post-Matric Scholarship for SC/ST",
-                    type: "Scholarship",
-                    authority: "Ministry of Social Justice",
-                    match: "Eligible",
-                  },
-                  {
-                    title: "Medical Reimbursement Claim",
-                    type: "Reimbursement",
-                    authority: "ABC Technologies HR",
-                    match: "Partially eligible",
-                  },
-                  {
-                    title: "B.Tech Admission Application",
-                    type: "Admission",
-                    authority: "NIT Admissions Office",
-                    match: "Needs review",
-                  },
+                  { title: "Post-Matric Scholarship for SC/ST", type: "Scholarship" },
+                  { title: "Medical Reimbursement Claim", type: "Reimbursement" },
+                  { title: "B.Tech Admission Application", type: "Admission" },
                 ].map((doc, i) => (
-                  <div key={i} className="rounded-lg border p-3 space-y-1">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium">{doc.title}</span>
-                      <Badge variant="secondary" className="text-xs">
-                        {doc.type}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span>{doc.authority}</span>
-                      <span
-                        className={
-                          doc.match === "Eligible"
-                            ? "text-success"
-                            : doc.match === "Partially eligible"
-                            ? "text-warning"
-                            : "text-info"
-                        }
-                      >
-                        {doc.match}
-                      </span>
-                    </div>
+                  <div key={i} className="flex items-center justify-between rounded-lg border p-2.5 text-sm">
+                    <span>{doc.title}</span>
+                    <Badge variant="secondary" className="text-xs">{doc.type}</Badge>
                   </div>
                 ))}
               </div>
@@ -289,9 +292,47 @@ export default function DemoPage() {
                 </div>
               </div>
 
+              {demoProgress && (
+                <div className="flex items-center gap-2 text-sm text-primary bg-primary/10 rounded-lg p-3">
+                  <Loader2 className="h-4 w-4 shrink-0 animate-spin" />
+                  <span>{demoProgress}</span>
+                </div>
+              )}
+
+              {error && (
+                <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 rounded-lg p-3">
+                  <AlertCircle className="h-4 w-4 shrink-0" />
+                  <span>{error}</span>
+                </div>
+              )}
+
+              <Button
+                onClick={handleParseDemoPDFs}
+                disabled={parsingDemo || isLoading}
+                className="w-full"
+              >
+                {parsingDemo ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Parsing with AI...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    Parse Real PDFs with AI
+                  </>
+                )}
+              </Button>
+
+              <p className="text-xs text-center text-muted-foreground">
+                Live AI parsing — sees actual PDF content in real time
+              </p>
+
+              <Separator />
+
               <Button
                 onClick={handleLoadDemo}
-                disabled={isLoading}
+                disabled={isLoading || parsingDemo}
                 variant="outline"
                 className="w-full"
               >
@@ -303,14 +344,13 @@ export default function DemoPage() {
                 ) : (
                   <>
                     <Zap className="mr-2 h-4 w-4" />
-                    Load Demo & Start
+                    Load Pre-parsed Demo
                   </>
                 )}
               </Button>
 
               <p className="text-xs text-center text-muted-foreground">
-                <CheckCircle2 className="inline h-3 w-3 mr-1" />
-                Works instantly, no API key needed for demo mode
+                Instant — pre-parsed data, no AI call
               </p>
             </CardContent>
           </Card>
