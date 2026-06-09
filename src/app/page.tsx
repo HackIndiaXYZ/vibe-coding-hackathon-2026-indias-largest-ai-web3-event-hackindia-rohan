@@ -269,7 +269,7 @@ export default function LandingPage() {
       <footer className="border-t py-8">
         <div className="mx-auto max-w-6xl px-4 text-center text-sm text-muted-foreground">
           <p>
-            Built for HackIndia 2026. Powered by Next.js, NVIDIA NIM, and Supabase.
+            Built for HackIndia 2026. Powered by Next.js and NVIDIA NIM.
           </p>
         </div>
       </footer>

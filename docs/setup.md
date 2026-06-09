@@ -25,8 +25,6 @@ Create `.env.local` with:
 
 ```
 NVIDIA_API_KEY=your-nvidia-nim-api-key
-NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 ```
 
 Get your NVIDIA NIM API key from [build.nvidia.com](https://build.nvidia.com/).
@@ -53,7 +51,7 @@ Click "Try Demo" on the landing page, then "Load Demo & Start".
 ### Vercel (Recommended)
 1. Push to GitHub
 2. Import project in Vercel
-3. Add `NVIDIA_API_KEY`, `NEXT_PUBLIC_SUPABASE_URL`, and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in environment variables
+3. Add `NVIDIA_API_KEY` in environment variables
 4. Deploy
 
 ```bash
