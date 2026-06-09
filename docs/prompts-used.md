@@ -6,12 +6,12 @@
 - "Build a file upload component with drag-and-drop using react-dropzone"
 
 ## Backend / Parsing
-- "Create an API route that accepts PDF uploads, extracts text with pdfjs-dist, and sends to Gemini for structured parsing"
+- "Create an API route that accepts PDF uploads, extracts text with pdfjs-dist, and sends to NVIDIA NIM for structured parsing"
 - "Design a Zod schema for parsed document output with title, authority, eligibility, fields, attachments, risks"
 - "Build a document type detector that categorizes uploads as scholarship, reimbursement, admission, or government"
 
 ## AI Integration
-- "Use Vercel AI SDK with generateObject to get structured output from Gemini"
+- "Use Vercel AI SDK with generateObject to get structured output from NVIDIA NIM"
 - "Build a chat API that takes document context, user profile, and question, then returns grounded answer with citations"
 - "Create prompt builders that inject full document context and profile into chat requests"
 

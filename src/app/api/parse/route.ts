@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateObject } from "ai";
 import { z } from "zod";
-import { model } from "@/lib/ai/gemini";
+import { model } from "@/lib/ai/nim";
 import { extractTextFromPDF } from "@/lib/parsing/pdf-parser";
 import { buildDocumentParsingPrompt } from "@/lib/ai/prompt-builder";
 import { detectDocumentType, getFileExtension } from "@/lib/parsing/document-detector";

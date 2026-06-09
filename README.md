@@ -26,7 +26,7 @@ Sahayak AI explains forms in plain language, extracts structured requirements, c
 
 ```
 Frontend: Next.js 16 + React + TypeScript + Tailwind CSS v4 + shadcn/ui
-AI: Vercel AI SDK + Google Gemini 2.0 Flash
+AI: Vercel AI SDK + NVIDIA NIM (Llama 3.3 70B)
 Parsing: pdfjs-dist + document type detection
 Logic: Deterministic eligibility, field mapping, scoring
 ```
@@ -51,7 +51,7 @@ No API key needed. Click "Try Demo" → "Load Demo & Start" to explore with pre-
 
 ## How AI is Used
 
-1. **OCR & Extraction** — PDF.js + Gemini parse documents into structured schemas
+1. **OCR & Extraction** — PDF.js + NVIDIA NIM parse documents into structured schemas
 2. **Eligibility** — Deterministic rules + AI interpretation for complex criteria
 3. **Field Mapping** — Intelligent profile-to-field matching with confidence labels
 4. **Grounded Chat** — RAG-style context injection with document citations
@@ -61,7 +61,7 @@ No API key needed. Click "Try Demo" → "Load Demo & Start" to explore with pre-
 
 - Demo mode uses pre-parsed documents for speed
 - OCR for scanned images is simulated (production would use Tesseract.js or cloud OCR)
-- Chat responses depend on Gemini API availability
+- Chat responses depend on NVIDIA NIM API availability
 
 ## Future Work
 

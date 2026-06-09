@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateObject } from "ai";
 import { z } from "zod";
-import { model } from "@/lib/ai/gemini";
+import { model } from "@/lib/ai/nim";
 import { buildChatPrompt } from "@/lib/ai/prompt-builder";
 import type { ParsedDocument, ApplicantProfile, EligibilityResult, ChatMessage } from "@/types";
 

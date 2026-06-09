@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateObject } from "ai";
 import { z } from "zod";
-import { model } from "@/lib/ai/gemini";
+import { model } from "@/lib/ai/nim";
 import { buildClauseSimplificationPrompt } from "@/lib/ai/prompt-builder";
 
 const simplifySchema = z.object({

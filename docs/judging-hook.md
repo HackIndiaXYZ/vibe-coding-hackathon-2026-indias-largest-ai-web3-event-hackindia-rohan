@@ -13,7 +13,7 @@
 - All 9 pages complete and polished
 
 ## Use of AI
-- **Gemini 2.0 Flash** for document parsing and grounded chat
+- **NVIDIA NIM (Llama 3.3 70B)** for document parsing and grounded chat
 - **Vercel AI SDK** with structured output via Zod schemas
 - **RAG-style context injection** for chat grounding
 - **Deterministic logic** for eligibility and field mapping

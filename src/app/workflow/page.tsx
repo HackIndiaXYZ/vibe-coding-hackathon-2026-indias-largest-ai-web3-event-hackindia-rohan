@@ -37,8 +37,8 @@ const aiComponents = [
     icon: BrainCircuit,
     title: "Structured Document Parsing",
     type: "AI",
-    description: "Gemini analyzes raw document text and extracts structured fields: title, authority, eligibility rules, required documents, risks, and more.",
-    tech: "Vercel AI SDK + Gemini 2.0 Flash, Zod schemas",
+    description: "NVIDIA NIM (Llama 3.3 70B) analyzes raw document text and extracts structured fields: title, authority, eligibility rules, required documents, risks, and more.",
+    tech: "Vercel AI SDK + NVIDIA NIM, Zod schemas",
     color: "text-primary",
   },
   {
@@ -70,7 +70,7 @@ const aiComponents = [
     title: "Grounded Chat (Ask Sahayak)",
     type: "AI",
     description: "Chat assistant that answers questions using ONLY extracted document data and user profile. Cites specific sections in every answer.",
-    tech: "Gemini 2.0 Flash, RAG-style context injection",
+    tech: "NVIDIA NIM (Llama 3.3 70B), RAG-style context injection",
     color: "text-primary",
   },
   {
@@ -94,7 +94,7 @@ const aiComponents = [
     title: "Clause Simplifier",
     type: "AI",
     description: "Translates legal/formal clauses into plain language. Accepts any legal text and returns a simplified version with key points and action items.",
-    tech: "Gemini 2.0 Flash, structured prompt engineering",
+    tech: "NVIDIA NIM (Llama 3.3 70B), structured prompt engineering",
     color: "text-warning",
   },
 ];
@@ -199,7 +199,7 @@ export default function WorkflowPage() {
             <div className="grid md:grid-cols-2 gap-4">
               {[
                 { category: "Frontend", items: ["Next.js 15 (App Router)", "React 19", "TypeScript", "Tailwind CSS v4", "shadcn/ui"] },
-                { category: "AI Integration", items: ["Vercel AI SDK", "Google Gemini 2.0 Flash", "Structured output (Zod)", "Grounded chat with citations"] },
+                { category: "AI Integration", items: ["Vercel AI SDK", "NVIDIA NIM (Llama 3.3 70B)", "Structured output (Zod)", "Grounded chat with citations"] },
                 { category: "Document Processing", items: ["pdfjs-dist for PDF parsing", "Image upload support", "OCR fallback pipeline", "Document type detection"] },
                 { category: "Logic & Scoring", items: ["Deterministic eligibility engine", "Rule-based field mapping", "Priority checklist generation", "Transparent readiness scoring"] },
               ].map((stack, i) => (

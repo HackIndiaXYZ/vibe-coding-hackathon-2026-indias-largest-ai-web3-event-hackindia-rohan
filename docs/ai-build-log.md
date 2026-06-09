@@ -4,7 +4,7 @@
 - Used AI to scaffold Next.js 15 project with TypeScript and Tailwind CSS v4
 - AI generated all Zod schemas for 14+ data models
 - AI built the PDF parsing pipeline with pdfjs-dist integration
-- AI designed the Gemini AI integration using Vercel AI SDK
+- AI designed the NVIDIA NIM AI integration using Vercel AI SDK
 
 ## Day 2: Core Logic
 - AI built the deterministic eligibility engine with 6 criterion types (income, education, age, category, state, identity)

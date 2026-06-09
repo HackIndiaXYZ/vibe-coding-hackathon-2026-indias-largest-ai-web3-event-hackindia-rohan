@@ -16,7 +16,7 @@ Sahayak AI is a Next.js 16 application with a clean separation between AI-powere
 │  Parsing │ Eligibility │ Checklist │ Scoring     │
 ├─────────────────────────────────────────────────┤
 │                AI Integration                    │
-│  Vercel AI SDK + Gemini 2.0 Flash               │
+│  Vercel AI SDK + NVIDIA NIM (Llama 3.3 70B)     │
 │  Structured output with Zod schemas             │
 └─────────────────────────────────────────────────┘
 ```
@@ -26,7 +26,7 @@ Sahayak AI is a Next.js 16 application with a clean separation between AI-powere
 1. **User uploads** PDF or image via React Dropzone
 2. **PDF.js** extracts text from each page
 3. **Document detector** identifies document type from content + filename
-4. **Gemini AI** parses raw text into structured `ParsedDocument` schema
+4. **NVIDIA NIM (Llama 3.3 70B)** parses raw text into structured `ParsedDocument` schema
 5. **Zod validation** ensures output matches expected structure
 6. **Results stored** in client-side state via React Context
 
