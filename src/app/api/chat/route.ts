@@ -35,6 +35,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (question.length > 2000) {
+      return NextResponse.json({ error: "Question too long (max 2000 characters)" }, { status: 400 });
+    }
+
     const prompt = buildChatPrompt(question, document, profile, eligibility, history || [], lang || "en");
 
     const { object } = await generateObject({

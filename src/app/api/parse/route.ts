@@ -64,6 +64,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No files uploaded" }, { status: 400 });
     }
 
+    if (files.length > 5) {
+      return NextResponse.json({ error: "Maximum 5 files per upload" }, { status: 400 });
+    }
+
+    for (const file of files) {
+      if (file.size > 10_000_000) {
+        return NextResponse.json({ error: `File "${file.name}" exceeds 10MB limit` }, { status: 400 });
+      }
+    }
+
     const results: ParsedDocument[] = [];
 
     for (const file of files) {
