@@ -55,6 +55,22 @@ const parseSchema = z.object({
   ),
 });
 
+function classifyError(error: unknown): { code: string; message: string; status: number } {
+  const err = error as { status?: number; statusCode?: number; message?: string; name?: string };
+  const status = err.status || err.statusCode || 0;
+
+  if (status === 401) {
+    return { code: "AUTH_ERROR", message: "AI service authentication failed — check API key configuration.", status: 401 };
+  }
+  if (status === 429) {
+    return { code: "RATE_LIMIT", message: "AI service rate limit reached — try again in a few moments.", status: 429 };
+  }
+  if (status === 503 || status === 502) {
+    return { code: "SERVICE_UNAVAILABLE", message: "AI service temporarily unavailable — try demo mode instead.", status: 503 };
+  }
+  return { code: "PARSE_ERROR", message: "Failed to parse documents — try demo mode for a instant walkthrough.", status: 500 };
+}
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
@@ -116,9 +132,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ documents: results });
   } catch (error) {
     console.error("Parse error:", error);
+    const classified = classifyError(error);
     return NextResponse.json(
-      { error: "Failed to parse documents" },
-      { status: 500 }
+      { error: classified.message, code: classified.code },
+      { status: classified.status }
     );
   }
 }

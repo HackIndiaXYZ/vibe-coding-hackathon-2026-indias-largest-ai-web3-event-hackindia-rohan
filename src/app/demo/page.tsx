@@ -74,7 +74,11 @@ export default function DemoPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Failed to parse documents");
+        const errMsg = data.error || "Failed to parse documents";
+        if (data.code === "AUTH_ERROR" || data.code === "RATE_LIMIT" || data.code === "SERVICE_UNAVAILABLE") {
+          throw new Error(`API Error: ${errMsg}`);
+        }
+        throw new Error(errMsg);
       }
 
       setUploadProgress("Documents parsed successfully!");
@@ -83,7 +87,8 @@ export default function DemoPage() {
       // Auto-navigate after brief delay
       setTimeout(() => router.push("/documents"), 1000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to parse documents");
+      const msg = err instanceof Error ? err.message : "Failed to parse documents";
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -127,13 +132,20 @@ export default function DemoPage() {
       const res = await fetch("/api/parse", { method: "POST", body: formData });
       const data = await res.json();
 
-      if (!res.ok) throw new Error(data.error || "Parse failed");
+      if (!res.ok) {
+        const errMsg = data.error || "Parse failed";
+        if (data.code === "AUTH_ERROR" || data.code === "RATE_LIMIT" || data.code === "SERVICE_UNAVAILABLE") {
+          throw new Error(`API Error: ${errMsg}`);
+        }
+        throw new Error(errMsg);
+      }
 
       setDemoProgress("Documents parsed! Loading results...");
       setDocuments(data.documents);
       setTimeout(() => router.push("/documents"), 800);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to parse demo PDFs");
+      const msg = err instanceof Error ? err.message : "Failed to parse demo PDFs";
+      setError(msg);
     } finally {
       setParsingDemo(false);
     }
@@ -227,9 +239,22 @@ export default function DemoPage() {
               )}
 
               {error && (
-                <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 rounded-lg p-3">
-                  <AlertCircle className="h-4 w-4 shrink-0" />
-                  <span>{error}</span>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-2 text-sm text-destructive bg-destructive/10 rounded-lg p-3">
+                    <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+                    <div className="space-y-1">
+                      <span className="block">{error}</span>
+                      {error.includes("API Error") && (
+                        <button
+                          onClick={handleLoadDemo}
+                          className="inline-flex items-center gap-1 text-xs font-medium underline underline-offset-2 hover:text-destructive/80"
+                        >
+                          <Zap className="h-3 w-3" />
+                          Try pre-parsed demo instead
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -300,9 +325,22 @@ export default function DemoPage() {
               )}
 
               {error && (
-                <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 rounded-lg p-3">
-                  <AlertCircle className="h-4 w-4 shrink-0" />
-                  <span>{error}</span>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-2 text-sm text-destructive bg-destructive/10 rounded-lg p-3">
+                    <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+                    <div className="space-y-1">
+                      <span className="block">{error}</span>
+                      {error.includes("API Error") && (
+                        <button
+                          onClick={handleLoadDemo}
+                          className="inline-flex items-center gap-1 text-xs font-medium underline underline-offset-2 hover:text-destructive/80"
+                        >
+                          <Zap className="h-3 w-3" />
+                          Try pre-parsed demo instead
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 </div>
               )}
 

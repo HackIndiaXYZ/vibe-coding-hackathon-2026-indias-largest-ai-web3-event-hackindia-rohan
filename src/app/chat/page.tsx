@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import {
   Send,
   ArrowRight,
@@ -87,7 +88,14 @@ export default function ChatPage() {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to get response");
+        const data = await res.json().catch(() => null);
+        const errMsg = data?.error || "Failed to get response";
+        if (data?.code === "AUTH_ERROR" || data?.code === "RATE_LIMIT" || data?.code === "SERVICE_UNAVAILABLE") {
+          toast.error(`AI Error: ${errMsg}`, { duration: 6000 });
+        } else {
+          toast.error(errMsg, { duration: 4000 });
+        }
+        throw new Error(errMsg);
       }
 
       const reader = res.body?.getReader();
@@ -113,11 +121,15 @@ export default function ChatPage() {
           timestamp: new Date().toISOString(),
         });
       }
-    } catch {
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Failed to process question";
+      if (!msg.includes("AI Error")) {
+        toast.error(msg, { duration: 4000 });
+      }
       addChatMessage({
         id: `msg-${++msgIdRef.current}-err`,
         role: "assistant",
-        content: "Sorry, I couldn't process that question. Please try again.",
+        content: msg.includes("AI Error") ? msg.replace("AI Error: ", "") : "Sorry, I couldn't process that question. Please try again.",
         citations: [],
         timestamp: new Date().toISOString(),
       });

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import toast from "react-hot-toast";
 
 interface SimplifyResult {
   simplified: string;
@@ -24,13 +25,21 @@ export function useClauseSimplifier() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "Failed to simplify");
+        const errMsg = data.error || "Failed to simplify";
+        if (data.code === "AUTH_ERROR" || data.code === "RATE_LIMIT" || data.code === "SERVICE_UNAVAILABLE") {
+          toast.error(`AI Error: ${errMsg}`, { duration: 6000 });
+        } else {
+          toast.error(errMsg, { duration: 4000 });
+        }
+        setError(errMsg);
         return null;
       }
       setResult(data);
       return data as SimplifyResult;
     } catch {
-      setError("Network error. Please try again.");
+      const msg = "Network error. Please try again.";
+      toast.error(msg, { duration: 4000 });
+      setError(msg);
       return null;
     } finally {
       setIsSimplifying(false);
