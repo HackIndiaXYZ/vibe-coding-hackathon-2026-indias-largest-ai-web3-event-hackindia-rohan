@@ -22,6 +22,12 @@ Sahayak AI explains forms in plain language, extracts structured requirements, c
 - **Readiness Score**: Transparent scoring with breakdown and submission plan.
 - **Demo Mode**: Works instantly with 3 pre-loaded sample documents.
 
+## AI-Assisted Development
+
+This project was built using AI-assisted development workflows. The codebase was scaffolded, iterated on, and refined through conversation with AI coding agents. `AGENTS.md` and `CLAUDE.md` in the repo root are the agent context files used during development — they document the AI-assisted methodology, not product features.
+
+The core product logic (eligibility engine, field mapping, readiness scoring, prompt engineering) was designed and validated by the human builder. AI handled boilerplate, scaffolding, and rapid iteration.
+
 ## Architecture
 
 ```
