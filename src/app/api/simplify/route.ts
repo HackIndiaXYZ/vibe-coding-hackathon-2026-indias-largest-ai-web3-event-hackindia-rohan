@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateObject } from "ai";
 import { z } from "zod";
-import { gemini } from "@/lib/ai/gemini";
+import { model } from "@/lib/ai/gemini";
 import { buildClauseSimplificationPrompt } from "@/lib/ai/prompt-builder";
 
 const simplifySchema = z.object({
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     const prompt = buildClauseSimplificationPrompt(clause, documentTitle || "Unknown Document");
 
     const { object } = await generateObject({
-      model: gemini,
+      model: model,
       schema: simplifySchema,
       prompt,
     });

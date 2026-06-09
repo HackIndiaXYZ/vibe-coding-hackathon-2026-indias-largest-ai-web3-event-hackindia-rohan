@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateObject } from "ai";
 import { z } from "zod";
-import { gemini } from "@/lib/ai/gemini";
+import { model } from "@/lib/ai/gemini";
 import { extractTextFromPDF } from "@/lib/parsing/pdf-parser";
 import { buildDocumentParsingPrompt } from "@/lib/ai/prompt-builder";
 import { detectDocumentType, getFileExtension } from "@/lib/parsing/document-detector";
@@ -87,8 +87,8 @@ export async function POST(request: NextRequest) {
       const documentType = detectDocumentType(rawText, file.name);
       const prompt = buildDocumentParsingPrompt(rawText, file.name);
 
-      const { object } = await generateObject({
-        model: gemini,
+    const { object } = await generateObject({
+      model: model,
         schema: parseSchema,
         prompt,
       });

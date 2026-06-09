@@ -1,10 +1,12 @@
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { createOpenAI } from "@ai-sdk/openai";
 
-export const google = createGoogleGenerativeAI({
-  apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY ?? "",
+export const nim = createOpenAI({
+  name: "nvidia",
+  apiKey: process.env.NVIDIA_API_KEY ?? "",
+  baseURL: "https://integrate.api.nvidia.com/v1",
 });
 
-export const gemini = google("gemini-2.0-flash");
+export const model = nim("meta/llama-3.3-70b-instruct");
 
 export const SYSTEM_PROMPT = `You are Sahayak AI, an intelligent assistant that helps people understand forms, 
 official documents, and paperwork. You are grounded in the uploaded documents and user profile data only.

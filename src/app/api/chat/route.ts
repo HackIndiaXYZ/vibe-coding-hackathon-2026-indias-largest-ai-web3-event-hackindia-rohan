@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateObject } from "ai";
 import { z } from "zod";
-import { gemini } from "@/lib/ai/gemini";
+import { model } from "@/lib/ai/gemini";
 import { buildChatPrompt } from "@/lib/ai/prompt-builder";
 import type { ParsedDocument, ApplicantProfile, EligibilityResult, ChatMessage } from "@/types";
 
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     const prompt = buildChatPrompt(question, document, profile, eligibility, history || []);
 
     const { object } = await generateObject({
-      model: gemini,
+      model: model,
       schema: chatResponseSchema,
       prompt,
     });
